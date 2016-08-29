@@ -1,0 +1,87 @@
+import junit.framework.*;
+
+public class JavaTest extends TestCase {
+   protected int value1, value2;
+   
+   // assigning the values
+   protected void setUp(){
+      value1 = 3;
+      value2 = 3;
+   }
+
+   // test method to add two values
+   public void testAdd(){
+      double result = value1 + value2;
+      assertTrue(result == 6);
+   }
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+//JUnit Suite Test
+@RunWith(Suite.class)
+
+@Suite.SuiteClasses({ 
+   TestJunit1.class ,TestJunit2.class
+})
+
+public class JunitTestSuite {
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+
+import org.junit.Test;
+import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
+
+public class TestJunit1 {
+
+   String message = "Robert";	
+   MessageUtil messageUtil = new MessageUtil(message);
+   
+   @Test
+   public void testPrintMessage() {	
+      System.out.println("Inside testPrintMessage()");    
+      assertEquals(message, messageUtil.printMessage());     
+   }
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+
+import org.junit.Test;
+import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
+
+public class TestJunit2 {
+
+   String message = "Robert";	
+   MessageUtil messageUtil = new MessageUtil(message);
+ 
+   @Test
+   public void testSalutationMessage() {
+      System.out.println("Inside testSalutationMessage()");
+      message = "Hi!" + "Robert";
+      assertEquals(message,messageUtil.salutationMessage());
+   }
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+public class TestRunner {
+   public static void main(String[] args) {
+      Result result = JUnitCore.runClasses(TestJunit.class);
+		
+      for (Failure failure : result.getFailures()) {
+         System.out.println(failure.toString());
+      }
+		
+      System.out.println(result.wasSuccessful());
+   }
+}
