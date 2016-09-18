@@ -1,0 +1,34 @@
+Dim objExcel, myFile, mySheet
+Set objExcel=CreateObject("Excel.Application");
+Set myfile=objexcel.Workbooks.Open("c:\Documents and Settings\pranaya\Desktop\data.xls")
+set mySheet=myFile.Worksheets("sheet1");
+Rows_count=my.sheet.usedrange.rows.count
+
+For i=2 to Rows_Count step 1
+SystemUtil.Run "c:\Program Files\HP\QuickTestProfesionals\sample\flight\app\flight4a.exe"
+Dialog("text:=Login").Activate
+Dailog("text:=Login").WinEdit("attached text:=AgentName:").Set
+mySheet.Cells(i,"A")
+Dailog("text:=Login").WinEdit("attached text:Password:").Set
+mySheet.Cells(i,"B")
+Wait(2)
+Dialog("text:=Login").WinButton("text:=OK").Click
+
+If Window("text:=Flight Reservation").Exist(12) then
+Window("text:=Flight Reservation").Close
+Result="Login Operation Successful"
+mySheet.Cells(i,"C")=Result
+Else
+
+Error_Message = Dialog("Login").Dialog("Flight Reservations").Static("Agent name must be at").GetROProperty("text")
+SystemUtil.CloseDescendentProcesses
+Result="Login Operation Failed"
+mySheet.Cells(i,"C")=Result
+mySheet.Cells(i,"D")=Error_Message
+End If
+Next
+myFile.Save
+myFile.Close
+objExcel.Quit
+Set objExcel=Nothing
+
